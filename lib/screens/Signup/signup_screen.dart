@@ -3,18 +3,52 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../responsive/responsive_layout_screen.dart';
 import 'components/signup_form.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
 
   @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+
+  bool _isLoading = false;
+
+  @override
   Widget build(BuildContext context) {
-    return const ResponsiveLayout(
-        mobile: MSignupScreen(), desktop: DSignupScreen());
+    return ResponsiveLayout(
+        mobile: MSignupScreen(
+          usernameController: usernameController,
+          emailController: emailController,
+          passwordController: passwordController,
+          confirmPasswordController: confirmPasswordController,
+        ),
+        desktop: DSignupScreen(
+          usernameController: usernameController,
+          emailController: emailController,
+          passwordController: passwordController,
+          confirmPasswordController: confirmPasswordController,
+        ));
   }
 }
 
 class MSignupScreen extends StatefulWidget {
-  const MSignupScreen({Key? key}) : super(key: key);
+  final TextEditingController usernameController;
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+  final TextEditingController confirmPasswordController;
+
+  const MSignupScreen({
+    Key? key,
+    required this.usernameController,
+    required this.emailController,
+    required this.passwordController,
+    required this.confirmPasswordController,
+  }) : super(key: key);
 
   @override
   State<MSignupScreen> createState() => _MSignupScreenState();
@@ -38,8 +72,13 @@ class _MSignupScreenState extends State<MSignupScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            padding: const EdgeInsets.all(20),
-            child: const SignupForm(),
+            padding: EdgeInsets.all(20),
+            child: SignupForm(
+              usernameController: widget.usernameController,
+              emailController: widget.emailController,
+              passwordController: widget.passwordController,
+              confirmPasswordController: widget.confirmPasswordController,
+            ),
           ),
         ),
       ),
@@ -48,7 +87,18 @@ class _MSignupScreenState extends State<MSignupScreen> {
 }
 
 class DSignupScreen extends StatefulWidget {
-  const DSignupScreen({Key? key}) : super(key: key);
+  final TextEditingController usernameController;
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+  final TextEditingController confirmPasswordController;
+
+  const DSignupScreen({
+    Key? key,
+    required this.usernameController,
+    required this.emailController,
+    required this.passwordController,
+    required this.confirmPasswordController,
+  }) : super(key: key);
 
   @override
   State<DSignupScreen> createState() => _DSignupScreenState();
@@ -113,7 +163,14 @@ class _DSignupScreenState extends State<DSignupScreen> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Expanded(child: SignupForm()),
+                Expanded(
+                  child: SignupForm(
+                    usernameController: widget.usernameController,
+                    emailController: widget.emailController,
+                    passwordController: widget.passwordController,
+                    confirmPasswordController: widget.confirmPasswordController,
+                  ),
+                ),
                 Expanded(child: Container()),
               ],
             ),

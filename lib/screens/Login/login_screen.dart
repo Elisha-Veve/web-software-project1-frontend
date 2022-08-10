@@ -14,15 +14,31 @@ class LoginScreen extends StatefulWidget {
 const double borderRadius = 20;
 
 class _LoginScreenState extends State<LoginScreen> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    return const ResponsiveLayout(
-        mobile: MLoginScreen(), desktop: DLoginScreen());
+    return ResponsiveLayout(
+        mobile: MLoginScreen(
+          emailController: emailController,
+          passwordController: passwordController,
+        ),
+        desktop: DLoginScreen(
+          emailController: emailController,
+          passwordController: passwordController,
+        ));
   }
 }
 
 class MLoginScreen extends StatefulWidget {
-  const MLoginScreen({Key? key}) : super(key: key);
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+  const MLoginScreen({
+    Key? key,
+    required this.emailController,
+    required this.passwordController,
+  }) : super(key: key);
 
   @override
   State<MLoginScreen> createState() => _MLoginScreenState();
@@ -45,7 +61,10 @@ class _MLoginScreenState extends State<MLoginScreen> {
         child: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.all(20),
-            child: const LoginForm(),
+            child: LoginForm(
+              emailController: widget.emailController,
+              passwordController: widget.passwordController,
+            ),
           ),
         ),
       ),
@@ -54,7 +73,13 @@ class _MLoginScreenState extends State<MLoginScreen> {
 }
 
 class DLoginScreen extends StatefulWidget {
-  const DLoginScreen({Key? key}) : super(key: key);
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+  const DLoginScreen({
+    Key? key,
+    required this.emailController,
+    required this.passwordController,
+  }) : super(key: key);
 
   @override
   State<DLoginScreen> createState() => _DLoginScreenState();
@@ -119,7 +144,11 @@ class _DLoginScreenState extends State<DLoginScreen> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Expanded(child: LoginForm()),
+                Expanded(
+                    child: LoginForm(
+                  emailController: widget.emailController,
+                  passwordController: widget.passwordController,
+                )),
                 Expanded(child: Container()),
               ],
             ),
